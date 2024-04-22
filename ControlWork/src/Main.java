@@ -2,10 +2,9 @@ import Animals.Cat;
 import Animals.Dog;
 import Animals.Horse;
 import Classes.*;
-
-import java.util.ArrayList;
+import DataBase.InterfaceDataBase;
+import DataBase.ListDataBase;
 import java.util.Date;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {

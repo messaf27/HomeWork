@@ -1,7 +1,10 @@
-package Classes;
+package DataBase;
+
+import Classes.Animal;
+import Classes.PackAnimal;
+import Classes.PetAnimal;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ListDataBase implements InterfaceDataBase{

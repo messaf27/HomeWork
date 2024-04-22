@@ -86,12 +86,14 @@ public abstract class Animal implements AnimalVoice {
     @Override
     public String toString() {
         return String.format(
+                "ID: %d" +
                 "Animal Type: %s, " +
                 "Name: %s, " +
-                "ID: %d",
+                "BD: %s",
+                getId(),
                 getAnimalType(),
                 getName(),
-                getId()
+                this.birthday
         );
     }
 }
