@@ -2,17 +2,15 @@ package Classes;
 
 import java.util.Date;
 
-public abstract class Animal extends ListCommand{
+public abstract class Animal {
     private Integer uniqId;
-    private int number;
     private Date birthday;
     private String name;
+    private final ListCommand listCommand;
 
-    private ListCommand listCommand;
-
-    public Animal(int number, Date birthday) {
-        uniqId = new UniqID().creteId();
-        this.number = number;
+    public Animal(String name, Date birthday) {
+        this.uniqId = new UniqID().creteId();
+        this.name = name;
         this.birthday = birthday;
         this.listCommand = new ListCommand();
     }
@@ -50,16 +48,26 @@ public abstract class Animal extends ListCommand{
         return animalType;
     }
 
+    public void addNewCommand(Command cmd)
+    {
+        this.listCommand.addCommand(cmd);
+    }
+
+    public String getCommands()
+    {
+        return this.listCommand.getList().toString();
+    }
+
     public void executeCommand(Command command)
     {
-        if(listCommand.getList().contains(command))
+        if(this.listCommand.getList().contains(command))
         {
             System.out.printf(
-                    "Animal Type: %s, " +
+//                    "Animal Type: %s, " +
                     "Name: %s, " +
-                    "ID: %d," +
+                    "ID: %d, " +
                     "Execute: %s ",
-                    getAnimalType(),
+//                    getAnimalType(),
                     getName(),
                     getId(),
                     command.toString()

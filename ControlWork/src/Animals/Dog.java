@@ -6,7 +6,8 @@ import Classes.PetAnimal;
 import java.util.Date;
 
 public class Dog extends PetAnimal {
-    public Dog(int number, Date birthday) {
-        super(number, birthday);
+
+    public Dog(String name, Date birthday) {
+        super(name, birthday);
     }
 }

@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Cat extends PetAnimal {
 
-    public Cat(int number, Date birthday) {
-        super(number, birthday);
+    public Cat(String name, Date birthday) {
+        super(name, birthday);
     }
 }

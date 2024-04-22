@@ -3,7 +3,8 @@ package Classes;
 import java.util.Date;
 
 public class PackAnimal extends Animal{
-    public PackAnimal(int number, Date birthday) {
-        super(number, birthday);
+
+    public PackAnimal(String name, Date birthday) {
+        super(name, birthday);
     }
 }
