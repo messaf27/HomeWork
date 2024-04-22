@@ -1,21 +1,24 @@
 package Classes;
 
-import Classes.PetCommands;
 import java.util.Date;
 
-public abstract class Animal extends PetCommands {
-    static int id;
-    int number;
-    Date birthday;
+public abstract class Animal extends ListCommand{
+    private Integer uniqId;
+    private int number;
+    private Date birthday;
+    private String name;
 
-    String name;
-
-    PetCommands commands;
+    private ListCommand listCommand;
 
     public Animal(int number, Date birthday) {
-        id++;
+        uniqId = new UniqID().creteId();
         this.number = number;
         this.birthday = birthday;
+        this.listCommand = new ListCommand();
+    }
+
+    public Integer getId() {
+        return uniqId;
     }
 
     public Date getBirthday() {
@@ -34,8 +37,51 @@ public abstract class Animal extends PetCommands {
         this.name = name;
     }
 
-    public String getCommandsList()
+    public String getAnimalType()
     {
-        return commands.toString();
+        String animalType = "";
+        if(this instanceof  PetAnimal) {
+            animalType = "PetAnimal";
+        }else if (this instanceof  PackAnimal) {
+            animalType = "PackAnimal";
+        }else{
+            animalType = "None Type!!!";
+        }
+        return animalType;
+    }
+
+    public void executeCommand(Command command)
+    {
+        if(listCommand.getList().contains(command))
+        {
+            System.out.printf(
+                    "Animal Type: %s, " +
+                    "Name: %s, " +
+                    "ID: %d," +
+                    "Execute: %s ",
+                    getAnimalType(),
+                    getName(),
+                    getId(),
+                    command.toString()
+            );
+        }else {
+            System.out.printf("Command: %s not found!!!\r\n", command.toString());
+        }
+    }
+
+
+
+
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Animal Type: %s, " +
+                "Name: %s, " +
+                "ID: %d",
+                getAnimalType(),
+                getName(),
+                getId()
+        );
     }
 }

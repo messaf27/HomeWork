@@ -1,6 +1,6 @@
 package Classes;
 
-public enum Commands {
+public enum Command {
     GO,
     STOP,
     RUN_AWAY,

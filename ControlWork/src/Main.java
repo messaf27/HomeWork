@@ -1,6 +1,6 @@
 import Animals.Cat;
 import Classes.Animal;
-import Classes.Commands;
+import Classes.Command;
 
 import java.util.Date;
 
@@ -12,15 +12,20 @@ public class Main {
         System.out.print("PetRegistr \r\n");
 
         Animal cat1 = new Cat(1, new Date());
-        Animal cat2 = new Cat(1, new Date());
+        Animal cat2 = new Cat(2, new Date());
 
         cat1.setName("Barsik");
         cat2.setName("Vasya");
 
-        cat1.addCommand(Commands.GO);
-        cat1.addCommand(Commands.STOP);
+        System.out.println(cat1);
+        System.out.println(cat2);
 
-        System.out.println(cat1.getCommandsList());
+        cat1.addCommand(Command.GO);
+        cat1.addCommand(Command.STOP);
+        System.out.println(cat1.getList());
+        cat1.executeCommand(Command.GO);
+
+//        System.out.println(cat1.getCommandsList());
 //        System.out.println(cat2.getCommandsList());
     }
 }
