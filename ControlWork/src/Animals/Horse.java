@@ -1,18 +1,17 @@
 package Animals;
 
-import Classes.Animal;
+import Classes.PackAnimal;
 import Classes.PetAnimal;
 
 import java.util.Date;
 
-public class Dog extends PetAnimal {
-
-    public Dog(String name, Date birthday) {
+public class Horse extends PackAnimal {
+    public Horse(String name, Date birthday) {
         super(name, birthday);
     }
 
     @Override
     public void palayVoice() {
-        System.out.println("Гав-гав!!!");
+        System.out.println("Иго-го!!!");
     }
 }

@@ -1,21 +1,24 @@
 import Animals.Cat;
 import Animals.Dog;
-import Classes.Animal;
-import Classes.Command;
+import Animals.Horse;
+import Classes.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
 
         System.out.print("PetRegistr \r\n");
 
+        InterfaceDataBase db = new ListDataBase();
+
         Animal cat1 = new Cat( "Barsik", new Date());
         Animal cat2 = new Cat("Vasya", new Date());
         Animal dog1 = new Dog("Tuzik", new Date());
         Animal dog2 = new Dog("Sharik", new Date());
+        Animal horse1 = new Horse("Iskra", new Date());
 
         System.out.println(cat1);
         System.out.println(cat2);
@@ -31,9 +34,16 @@ public class Main {
 
 
         cat1.executeCommand(Command.GO);
-//        dog1.executeCommand(Command.JUMP);
+        dog1.executeCommand(Command.JUMP);
+        dog2.executeCommand(Command.JUMP);
 
-//        System.out.println(cat1.getCommandsList());
-//        System.out.println(cat2.getCommandsList());
+        db.addAnimal(cat1);
+        db.addAnimal(cat2);
+        db.addAnimal(dog1);
+        db.addAnimal(dog2);
+        db.addAnimal(horse1);
+
+        System.out.println(db);
+
     }
 }
