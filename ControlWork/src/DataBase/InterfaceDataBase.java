@@ -1,5 +1,4 @@
 package DataBase;
-
 import Classes.Animal;
 
 public interface InterfaceDataBase {

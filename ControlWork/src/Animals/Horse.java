@@ -1,8 +1,6 @@
 package Animals;
 
 import Classes.PackAnimal;
-import Classes.PetAnimal;
-
 import java.util.Date;
 
 public class Horse extends PackAnimal {
@@ -11,7 +9,12 @@ public class Horse extends PackAnimal {
     }
 
     @Override
-    public void palayVoice() {
+    public void playVoice() {
         System.out.println("Иго-го!!!");
+    }
+
+    @Override
+    public void giveFood() {
+
     }
 }

@@ -2,7 +2,7 @@ package Classes;
 
 import java.util.Date;
 
-public abstract class Animal implements AnimalVoice {
+public abstract class Animal implements AnimalCommandInterface {
     private Integer uniqId;
     private Date birthday;
     private String name;
@@ -76,7 +76,7 @@ public abstract class Animal implements AnimalVoice {
 
             if(command == Command.VOICE)
             {
-                palayVoice();
+                playVoice();
             }
         }else {
             System.out.printf("Command: %s not found!!!\r\n", command.toString());

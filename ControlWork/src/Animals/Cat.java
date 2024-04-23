@@ -13,7 +13,12 @@ public class Cat extends PetAnimal {
     }
 
     @Override
-    public void palayVoice() {
+    public void playVoice() {
         System.out.println("Мяу-мяу!!!");
+    }
+
+    @Override
+    public void giveFood() {
+
     }
 }

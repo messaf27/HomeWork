@@ -10,7 +10,12 @@ public class Camel extends PetAnimal {
     }
 
     @Override
-    public void palayVoice() {
+    public void playVoice() {
         System.out.println("Тьфу!!!");
+    }
+
+    @Override
+    public void giveFood() {
+
     }
 }
