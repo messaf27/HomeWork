@@ -1,7 +1,6 @@
 package Animals;
 
 import Classes.PetAnimal;
-
 import java.util.Date;
 
 public class Hamster extends PetAnimal {
@@ -10,7 +9,12 @@ public class Hamster extends PetAnimal {
     }
 
     @Override
-    public void palayVoice() {
+    public void playVoice() {
         System.out.println("Фыр-фыр!!!");
+    }
+
+    @Override
+    public void giveFood() {
+
     }
 }

@@ -12,7 +12,12 @@ public class Dog extends PetAnimal {
     }
 
     @Override
-    public void palayVoice() {
+    public void playVoice() {
         System.out.println("Гав-гав!!!");
+    }
+
+    @Override
+    public void giveFood() {
+
     }
 }
