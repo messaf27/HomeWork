@@ -18,6 +18,14 @@ public class ListDataBase implements InterfaceDataBase{
         this.petAnimals = new ArrayList<>();
         this.packAnimals = new ArrayList<>();
     }
+    public void printTest(){
+        System.out.printf("Print metod!!!");
+    }
+
+    @Override
+    public boolean connect() {
+        return true;
+    }
 
     @Override
     public void addAnimal(Animal animal) {
