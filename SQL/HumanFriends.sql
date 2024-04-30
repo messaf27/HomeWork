@@ -57,9 +57,7 @@ CREATE TABLE PetAnimal (
 );
 
 INSERT INTO PetAnimal (AnimaTypeID, AnimalName, AnimalDateBd, AnimalCommands)
-VALUES
---     (1, 1, 'Barsik', '2020-08-11', 'GO, STOP, JUMP'),
---     (2, 1, 'Tuzic',  '2010-05-12', 'GO, STOP, VOICE, JUMP');
+VALUESHumanFriendsHumanFriends
     (1, 'Barsik', '2020-08-11', 'GO, STOP, JUMP'),
     (1, 'Tuzic',  '2010-05-12', 'GO, STOP, VOICE, JUMP');
     
