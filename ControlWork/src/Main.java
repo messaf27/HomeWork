@@ -16,7 +16,11 @@ public class Main {
 //        InterfaceDataBase db = new ListDataBase();
 //        db.connect();
 
-        InterfaceDataBase dbSql = new MySQLDataBase("mysql://sql6.freemysqlhosting.net:3306/sql6702277", "sql6702277", "23zhPdXxGb");
+        InterfaceDataBase dbSql = new MySQLDataBase(
+                "mysql://sql6.freemysqlhosting.net:3306/sql6702277",
+                "sql6702277",
+                "23zhPdXxGb"
+        );
         boolean res = dbSql.connect();
         System.out.printf("Connect to DB %s", res ? "OK" : "FAIL");
 
