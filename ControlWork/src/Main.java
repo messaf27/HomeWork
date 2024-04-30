@@ -17,7 +17,7 @@ public class Main {
 //        db.connect();
 
         InterfaceDataBase dbSql = new MySQLDataBase(
-                "mysql://sql6.freemysqlhosting.net:3306/sql6702277",
+                "jdbc:mysql://sql6.freemysqlhosting.net:3306/sql6702277",
                 "sql6702277",
                 "23zhPdXxGb"
         );

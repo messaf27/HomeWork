@@ -43,9 +43,26 @@ public class MySQLDataBase implements InterfaceDataBase{
             //close connection ,stmt and resultset here
             try { con.close(); } catch(SQLException se) { /*can't do anything */ }
             try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
-            try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
+//            try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
         }
         return result;
+    }
+
+    @Override
+    public boolean create(String dbTableName) {
+
+        String query = "CREATE TABLE IF NOT EXISTS "+ dbTableName + "("+
+                            "id INT UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT," +
+                            "type VARCHAR(45) NOT NULL," +
+                            "type_name VARCHAR(45)," +
+                            "year_movie YEAR," +
+                            "count_min INT UNSIGNED,"+
+                            "storyline TEXT," +
+                            "animal_id INT UNSIGNED NOT NULL " +
+                        ");";
+
+
+        return false;
     }
 
     @Override

@@ -1,10 +1,11 @@
 package Animals;
 
+import Classes.PackAnimal;
 import Classes.PetAnimal;
 
 import java.util.Date;
 
-public class Camel extends PetAnimal {
+public class Camel extends PackAnimal {
     public Camel(String name, Date birthday) {
         super(name, birthday);
     }
