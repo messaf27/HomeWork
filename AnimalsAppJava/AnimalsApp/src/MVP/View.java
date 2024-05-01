@@ -2,7 +2,6 @@ package MVP;
 
 import Animals.Animal;
 import DataBase.InterfaceDataBase;
-import DataBase.MySQLDataBase;
 import UI.Menu;
 
 public interface View {
