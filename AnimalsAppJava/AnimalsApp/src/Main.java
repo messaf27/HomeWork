@@ -1,7 +1,4 @@
-import Animals.Animal;
-import Animals.Cat;
-import Animals.Horse;
-import Animals.PackAnimals;
+import Animals.*;
 import DataBase.FileDataBase;
 import DataBase.InterfaceDataBase;
 import DataBase.ListDataBase;
@@ -13,15 +10,16 @@ import UI.App;
 public class Main {
     public static void main(String[] args) {
 
-//        App app = new App();
-//        boolean result = app.run();
-//
-//        System.out.printf(
-//                "Приложение завершилось %s\r\n",
-//                result ? "без ошибок" : "с ошибкой!");
+        App app = new App();
+        boolean result = app.run();
 
-        InterfaceDataBase db = new FileDataBase("dataBase.db");
-        db.open();
+        System.out.printf(
+                "Приложение завершилось %s\r\n",
+                result ? "без ошибок" : "с ошибкой!");
+//
+//        InterfaceDataBase db = new FileDataBase("dataBase.db", "Human Friends");
+//        db.open();
+//        System.out.println(db);
 
 //        Animal cat1 = new Cat("Barsik", "12-12-2020");
 //        cat1.addCommand("Jump");
@@ -35,7 +33,7 @@ public class Main {
 //
 //        db.addAnimal(cat1);
 //        db.addAnimal(horse1);
-//
+
 //        db.close();
     }
 

@@ -51,8 +51,13 @@ public class Presenter {
 
     public boolean startUserInterface()
     {
+        boolean dbIsOpen = model.getCurrentDataBase().open();
         while(true)
         {
+            if(!dbIsOpen) {
+                view.displayResultMessage("Невозможно открыть базу данных!");
+                return false;
+            }
             view.displayMenu(
                     String.format("База данных \"%s\" содержет %d животных",
                             model.getCurrentDataBase().getName(),
@@ -94,7 +99,7 @@ public class Presenter {
                                                 animal = new Hamster(view.getName(), view.getBirthday());
                                             }
                                         }
-                                        animal.addCommand(addCommandMenu());
+                                        animal.addCommands(addCommandMenu());
                                         model.getCurrentDataBase().addAnimal(animal);
                                     }
                                     case 4 -> {break;}
@@ -118,7 +123,7 @@ public class Presenter {
                                                 animal = new Camel(view.getName(), view.getBirthday());
                                             }
                                         }
-                                        animal.addCommand(addCommandMenu());
+                                        animal.addCommands(addCommandMenu());
                                         model.getCurrentDataBase().addAnimal(animal);
                                     }
                                     case 4 -> {break;}
@@ -164,19 +169,19 @@ public class Presenter {
         return model.getCurrentDataBase().close();
     }
 
-    private String addCommandMenu()
+    private ArrayList<String> addCommandMenu()
     {
         String command = "";
-
+        ArrayList<String> commands = new ArrayList<>();
         while (true)
         {
             view.displayMenu("Добавить команду?", confirmRequestYesNo);
             if(view.getSelectedMenuItem() == 2)
                 break;
-            command = view.getCommand();
+            commands.add(view.getCommand());
             view.displayResultMessage("Команда добавлена");
         }
-        return command;
+        return commands;
     }
 
 }

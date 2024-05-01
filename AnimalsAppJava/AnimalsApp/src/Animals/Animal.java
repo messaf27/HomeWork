@@ -48,6 +48,7 @@ public abstract class Animal {
     public void addCommand(String command)
     {
         commands.add(command);
+        System.out.println(commands);
     }
     public ArrayList<String> getCommands() {
         return commands;
@@ -56,6 +57,8 @@ public abstract class Animal {
     public void addCommands(ArrayList<String> commands) {
         this.commands = commands;
     }
+
+
 
     @Override
     public String toString() {

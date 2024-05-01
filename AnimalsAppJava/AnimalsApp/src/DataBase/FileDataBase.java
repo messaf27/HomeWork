@@ -13,11 +13,14 @@ import java.util.Scanner;
 public class FileDataBase implements InterfaceDataBase{
 
     private String path;
+    private final String dbname;
+
     private final List<PetAnimals> petAnimals;
     private final List<PackAnimals> packAnimals;
 
-    public FileDataBase(String path) {
+    public FileDataBase(String path, String dbname) {
         this.path = path;
+        this.dbname = dbname;
         this.petAnimals = new ArrayList<>();
         this.packAnimals = new ArrayList<>();
     }
@@ -28,7 +31,6 @@ public class FileDataBase implements InterfaceDataBase{
         this.path = path;
 //        this.animals = new ArrayList<>();
     }
-
 
     private Animal getAnimalFromLine(String line){
         Animal animal = null;
@@ -42,59 +44,61 @@ public class FileDataBase implements InterfaceDataBase{
             }
             s.close();
             switch (lineValues.get(0)) {
-                case "Animal.PetAnimal" -> {
+                case "PetAnimals" -> {
                     switch (lineValues.get(1)){
                         case "Cat" ->{
                             animal = new Cat(
                                     lineValues.get(2),
                                     lineValues.get(3));
-                            animal.addCommands(commands.getComDelimiterFromString(
-                                    lineValues.get(4), "|"));
+                            animal.addCommands(commands.getComFromString(lineValues.get(4)));
                         }
                         case "Dog" ->{
                             animal = new Dog(
                                     lineValues.get(2),
                                     lineValues.get(3));
-                            animal.addCommands(commands.getComDelimiterFromString(
-                                    lineValues.get(4), "|"));
+                            animal.addCommands(commands.getComFromString(lineValues.get(4)));
                         }
                         case "Hamster" ->{
                             animal = new Hamster(
                                     lineValues.get(2),
                                     lineValues.get(3));
-                            animal.addCommands(commands.getComDelimiterFromString(
-                                    lineValues.get(4), "|"));
+                            animal.addCommands(commands.getComFromString(lineValues.get(4)));
                         }
                     }
                 }
-                case "Animal.PackAnimal" -> {
+                case "PackAnimals" -> {
                     switch (lineValues.get(1)){
                         case "Horse" ->{
                             animal = new Horse(
                                     lineValues.get(2),
                                     lineValues.get(3));
-                            animal.addCommands(commands.getComDelimiterFromString(
-                                    lineValues.get(4), "|"));
+                            animal.addCommands(commands.getComFromString(lineValues.get(4)));
                         }
                         case "Donkey" ->{
                             animal = new Donkey(
                                     lineValues.get(2),
                                     lineValues.get(3));
-                            animal.addCommands(commands.getComDelimiterFromString(
-                                    lineValues.get(4), "|"));
+                            animal.addCommands(commands.getComFromString(lineValues.get(4)));
                         }
                         case "Camel" ->{
                             animal = new Camel(
                                     lineValues.get(2),
                                     lineValues.get(3));
-                            animal.addCommands(commands.getComDelimiterFromString(
-                                    lineValues.get(4), "|"));
+                            animal.addCommands(commands.getComFromString(lineValues.get(4)));
                         }
                     }
                 }
             }
         }
         return animal;
+    }
+
+    private void writeAnimalToFile(FileWriter wr, Commands commands, Animal animal) throws IOException {
+        wr.append(String.format("%s, ", animal.getClass().getSuperclass().getSimpleName()));
+        wr.append(String.format("%s, ", animal.getClass().getSimpleName()));
+        wr.append(String.format("%s, ", animal.getName()));
+        wr.append(String.format("%s, ", animal.getBirthday()));
+        wr.append(String.format("%s\n", commands.setComToString(animal.getCommands())));
     }
 
     @Override
@@ -105,7 +109,7 @@ public class FileDataBase implements InterfaceDataBase{
                 animal = getAnimalFromLine(s.nextLine());
                 if(animal instanceof PetAnimals){
                     this.petAnimals.add((PetAnimals) animal);
-                }else if (animal instanceof  PackAnimals){
+                }else if (animal instanceof PackAnimals){
                     this.packAnimals.add((PackAnimals) animal);
                 }else{
                     return false;
@@ -119,29 +123,25 @@ public class FileDataBase implements InterfaceDataBase{
         return true;
     }
 
-    @Override
-    public boolean close() {
+    private boolean save()
+    {
         try (FileWriter wr = new FileWriter(this.path, false)) {
+            Commands commands = new Commands();
+
             for(int i =0; i < this.petAnimals.size(); i++ )
             {
                 Animal animal = this.petAnimals.get(i);
-                Commands commands = new Commands();
+//                Commands commands = new Commands();
 
-                wr.append(String.format("%s, ", animal.getClass()));
-                wr.append(String.format("%s, ", animal.getName()));
-                wr.append(String.format("%s, ", animal.getBirthday()));
-                wr.append(String.format("%s\n", commands.setComDelimiterToString(animal.getCommands(), "|")));
+                writeAnimalToFile(wr, commands, animal);
 
             }
             for(int i =0; i < this.packAnimals.size(); i++ )
             {
                 Animal animal = this.packAnimals.get(i);
-                Commands commands = new Commands();
+//                Commands commands = new Commands();
 
-                wr.append(String.format("%s, ", animal.getClass()));
-                wr.append(String.format("%s, ", animal.getName()));
-                wr.append(String.format("%s, ", animal.getBirthday()));
-                wr.append(String.format("%s\n", commands.setComDelimiterToString(animal.getCommands(), "|")));
+                writeAnimalToFile(wr, commands, animal);
 
             }
             wr.flush();
@@ -153,9 +153,15 @@ public class FileDataBase implements InterfaceDataBase{
         return true;
     }
 
+
+    @Override
+    public boolean close() {
+        return this.save();
+    }
+
     @Override
     public String getName() {
-        return this.path;
+        return String.format("%s (%s)", this.dbname, this.path);
     }
 
     @Override
@@ -165,6 +171,7 @@ public class FileDataBase implements InterfaceDataBase{
         } else if (animal instanceof PackAnimals) {
             this.packAnimals.add((PackAnimals) animal);
         }
+        this.save();
     }
 
     @Override
@@ -186,16 +193,60 @@ public class FileDataBase implements InterfaceDataBase{
 
     @Override
     public boolean removeAnimal(Animal animal) {
-        return false;
+        if(animal instanceof PetAnimals){
+            this.petAnimals.remove((PetAnimals) animal);
+        } else if (animal instanceof PackAnimals) {
+            this.packAnimals.remove((PackAnimals) animal);
+        }else {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public boolean removeAnimal(int id) {
+        for(int i =0; i < this.petAnimals.size(); i++ )
+        {
+            if(this.petAnimals.get(i).getId() == id){
+                this.petAnimals.remove(i);
+                return this.save();
+            }
+        }
+
+        for(int i =0; i < this.packAnimals.size(); i++ )
+        {
+            if(this.packAnimals.get(i).getId() == id){
+                this.packAnimals.remove(i);
+                return this.save();
+            }
+        }
         return false;
     }
 
     @Override
     public int getNumOfAnimals() {
-        return 0;
+        return this.petAnimals.size() + this.packAnimals.size();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder dbReport = new StringBuilder();
+
+        dbReport.append(String.format("\r\n----- %s ------\r\n", this.path));
+        dbReport.append(String.format("Домашние животные (%d):\r\n", this.petAnimals.size()));
+        for (PetAnimals petAnimal: this.petAnimals) {
+            dbReport.append(String.format(petAnimal.toString()));
+            dbReport.append("\r\n");
+        }
+
+        dbReport.append(String.format("Вьючные животные (%d):\r\n", this.packAnimals.size()));
+        for (PackAnimals packAnimal: this.packAnimals) {
+            dbReport.append(String.format(packAnimal.toString()));
+            dbReport.append("\r\n");
+        }
+
+        dbReport.append("\r\n----- Конец базы данных ------\r\n");
+
+        return dbReport.toString();
     }
 }

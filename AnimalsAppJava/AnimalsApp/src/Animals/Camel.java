@@ -1,9 +1,11 @@
 package Animals;
 
-import java.util.ArrayList;
+public class Camel extends PackAnimals {
+    private static final String className = "Camel";
 
-public class Camel extends PackAnimals{
     public Camel(String name, String birthday) {
         super(name, birthday);
     }
+
+    public String getAnimalClassName(){return className; }
 }

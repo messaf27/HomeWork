@@ -3,9 +3,6 @@ package DataBase;
 import Animals.Animal;
 import Animals.PackAnimals;
 import Animals.PetAnimals;
-import Animals.Animal;
-import Animals.PackAnimals;
-import Animals.PetAnimals;
 
 import java.util.ArrayList;
 import java.util.List;
