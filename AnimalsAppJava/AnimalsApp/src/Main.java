@@ -1,32 +1,42 @@
 import Animals.Animal;
 import Animals.Cat;
 import Animals.Horse;
+import Animals.PackAnimals;
+import DataBase.FileDataBase;
 import DataBase.InterfaceDataBase;
 import DataBase.ListDataBase;
 import DataBase.MySQLDataBase;
+import UI.App;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
 
-        InterfaceDataBase animalDB = new ListDataBase("Human Friends");
+//        App app = new App();
+//        boolean result = app.run();
+//
+//        System.out.printf(
+//                "Приложение завершилось %s\r\n",
+//                result ? "без ошибок" : "с ошибкой!");
 
-        Animal cat1 = new Cat("Barsik", "11-12-2010");
-        cat1.addCommand("Go");
+        InterfaceDataBase db = new FileDataBase("dataBase.db");
+        db.open();
 
-        Animal cat2 = new Cat("Vasya", "13-05-2023");
-        cat2.addCommand("Jump");
-
-        Animal horse1 = new Horse("Iskra", "18-10-2020");
-        horse1.addCommand("Stop");
-        horse1.addCommand("Go");
-        horse1.addCommand("Sleep");
-
-        animalDB.addAnimal(cat1);
-        animalDB.addAnimal(cat2);
-        animalDB.addAnimal(horse1);
-
-        System.out.println(animalDB);
+//        Animal cat1 = new Cat("Barsik", "12-12-2020");
+//        cat1.addCommand("Jump");
+//        cat1.addCommand("Voice");
+//        cat1.addCommand("Go");
+//
+//        Animal horse1 = new Horse("Iskra", "02-05-2023");
+//        horse1.addCommand("Stop");
+//        horse1.addCommand("Get");
+//        horse1.addCommand("Beg");
+//
+//        db.addAnimal(cat1);
+//        db.addAnimal(horse1);
+//
+//        db.close();
     }
+
 }

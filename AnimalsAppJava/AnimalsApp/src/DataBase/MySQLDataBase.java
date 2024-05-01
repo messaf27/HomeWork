@@ -50,8 +50,39 @@ public class MySQLDataBase implements InterfaceDataBase{
     }
 
     @Override
+    public boolean close() {
+        // TODO: Добавить механизм закрытия
+        return true;
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
     public void addAnimal(Animal animal) {
 
+    }
+
+    @Override
+    public String getAnimalFromId(int id) {
+        return "";
+    }
+
+    @Override
+    public boolean removeAnimal(Animal animal) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAnimal(int id) {
+        return false;
+    }
+
+    @Override
+    public int getNumOfAnimals() {
+        return 0;
     }
 
     public static class Commands {

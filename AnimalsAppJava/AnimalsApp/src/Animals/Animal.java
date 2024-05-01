@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public abstract class Animal {
     static int counter;
-    private final Integer id;
+    private final int id;
     private String name;
     private String birthday;
     private ArrayList<String> commands;
@@ -22,6 +22,12 @@ public abstract class Animal {
     {
         return this.id;
     }
+
+    public int getCounter()
+    {
+        return counter;
+    }
+
 
     public String getBirthday() {
         return birthday;
@@ -47,7 +53,7 @@ public abstract class Animal {
         return commands;
     }
 
-    public void setCommands(ArrayList<String> commands) {
+    public void addCommands(ArrayList<String> commands) {
         this.commands = commands;
     }
 
@@ -63,10 +69,10 @@ public abstract class Animal {
                     sb.append(", ");
             }
         }else {
-            sb.append("None commands");
+            sb.append("Нет команд");
         }
 
-        return String.format("[%d] Name: %s, Birthday: %s, Commands: %s",
+        return String.format("[ID: %d] Имя: %s, Дата рождения: %s, Команды: %s",
         this.id, this.name, this.birthday, sb);
     }
 }
