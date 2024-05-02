@@ -181,6 +181,269 @@ public class Main {
 }
 ```
 
+* База данных выполнена в виде файла `AnimalsAppJava/AnimalsApp/dataBase.db` ([dataBase.db](https://github.com/messaf27/HomeWork/blob/main/AnimalsAppJava/AnimalsApp/dataBase.db))
+
+```
+PetAnimals, Hamster, Чика, 13-02-2020, [Спать,Жрать,Бегать]
+PetAnimals, Cat, Вася, 12-12-2020, [Голос,Прыгнуть,Брысь]
+PackAnimals, Donkey, Эдик, 15-06-2018, [Быстрее,Сидеть,Лежать]
+PackAnimals, Camel, Боря, 17-12-2019, [Плюнуть]
+```
+* Файл бызы данных подключается через класс-интерфейс в файле `AnimalsAppJava/AnimalsApp/src/UI/App.java` ([App.java](https://github.com/messaf27/HomeWork/blob/main/AnimalsAppJava/AnimalsApp/src/UI/App.java)): 
+```java
+package UI;
+
+import DataBase.FileDataBase;
+import DataBase.ListDataBase;
+import MVP.Model;
+import MVP.Presenter;
+import MVP.View;
+
+import java.util.function.Predicate;
+
+public class App {
+    public boolean run(){
+        System.out.print("\033[H\033[J");// ru.stackoverflow.com/questions/1315049/Как-очистить-консоль-в-java-во-время-действия-программы
+        View view = new ConsoleView();
+//        Model model = new Model(new ListDataBase("Друзья человека"));
+        Model model = new Model(new FileDataBase("dataBase.db", "Друзья человека"));
+        Presenter presenter = new Presenter(model, view);
+        return presenter.startUserInterface();
+    }
+}
+```
+
+* Вся основная работа приложения осуществляется в файле `AnimalsAppJava/AnimalsApp/src/MVP/Presenter.java` ([Presenter.java](https://github.com/messaf27/HomeWork/blob/main/AnimalsAppJava/AnimalsApp/src/MVP/Presenter.java)): 
+
+```java
+ackage MVP;
+
+import Animals.*;
+import UI.Menu;
+import UI.MenuItem;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Presenter {
+    private Model model;
+    private View view;
+
+    private final Menu main = new Menu(Arrays.asList(
+            new MenuItem("Прочитать базу данных", 1),
+            new MenuItem("Добавить животное", 2),
+            new MenuItem("Удалить животное", 3),
+            new MenuItem("Выход", 4)
+    ));
+
+    private final Menu selectAddAnimals = new Menu(Arrays.asList(
+            new MenuItem("Добавить домашнее животное", 1),
+            new MenuItem("Добавить вьючное животное", 2)
+    )
+    );
+
+    private final Menu selectAddPetAnimal = new Menu(Arrays.asList(
+            new MenuItem("Кот", 1),
+            new MenuItem("Собака", 2),
+            new MenuItem("Хомяк", 3),
+            new MenuItem("Отменить добавление", 4)
+    ));
+
+    private final Menu selectAddPackAnimal = new Menu(Arrays.asList(
+            new MenuItem("Лошадь", 1),
+            new MenuItem("Осёл", 2),
+            new MenuItem("Верблюд", 3),
+            new MenuItem("Отменить добавление", 4)
+    ));
+
+    private final Menu confirmRequestYesNo = new Menu(Arrays.asList(
+            new MenuItem("Да", 1),
+            new MenuItem("Нет", 2)
+    ));
+
+
+    public Presenter(Model model, View view) {
+        this.model = model;
+        this.view = view;
+    }
+
+    public boolean startUserInterface()
+    {
+        boolean dbIsOpen = model.getCurrentDataBase().open();
+        while(true)
+        {
+            if(!dbIsOpen) {
+                view.displayResultMessage("Невозможно открыть базу данных!");
+                return false;
+            }
+            view.displayMenu(
+                    String.format("База данных \"%s\" содержет %d животных",
+                            model.getCurrentDataBase().getName(),
+                    model.getCurrentDataBase().getNumOfAnimals()),
+                    main);
+
+            int selectedItem = view.getSelectedMenuItem();
+
+            if(selectedItem == 4) {
+                return this.exit();
+            }else if (selectedItem > 0 && selectedItem < main.getNumItems()) {
+                switch (selectedItem)
+                {
+                    case 1 ->{
+                        view.displayDataBase(model.getCurrentDataBase());
+                    }
+
+                    case 2 ->{
+                        view.displayMenu("Выберете тип животного:",
+                                selectAddAnimals);
+
+                        Animal animal = null;
+                        switch (view.getSelectedMenuItem()){
+                            case 1 ->{
+                                view.displayMenu("Выберете вид домашнего животного:",
+                                        selectAddPetAnimal);
+
+                                int selected = view.getSelectedMenuItem();
+                                switch (selected){
+                                    case 1,2,3->{
+                                        switch (selected){
+                                            case 1 ->{
+                                                animal = new Cat(view.getName(), view.getBirthday());
+                                            }
+                                            case 2 ->{
+                                                animal = new Dog(view.getName(), view.getBirthday());
+                                            }
+                                            case 3 ->{
+                                                animal = new Hamster(view.getName(), view.getBirthday());
+                                            }
+                                        }
+                                        animal.addCommands(addCommandMenu());
+                                        model.getCurrentDataBase().addAnimal(animal);
+                                    }
+                                    case 4 -> {break;}
+                                }
+                            }
+
+                            case 2 ->{
+                                view.displayMenu("Выберете вид вьючного животного:",
+                                        selectAddPackAnimal);
+                                int selected = view.getSelectedMenuItem();
+                                switch (selected){
+                                    case 1,2,3->{
+                                        switch (selected){
+                                            case 1 ->{
+                                                animal = new Horse(view.getName(), view.getBirthday());
+                                            }
+                                            case 2 ->{
+                                                animal = new Donkey(view.getName(), view.getBirthday());
+                                            }
+                                            case 3 ->{
+                                                animal = new Camel(view.getName(), view.getBirthday());
+                                            }
+                                        }
+                                        animal.addCommands(addCommandMenu());
+                                        model.getCurrentDataBase().addAnimal(animal);
+                                    }
+                                    case 4 -> {break;}
+                                }
+                            }
+                            case 4 -> {break;}
+
+                        }
+                    }
+
+                    case 3->{
+                        int deleteId = view.getId();
+                        if(model.getCurrentDataBase().getAnimalFromId(deleteId) != null)
+                        {
+                            view.displayMenu(
+                                    String.format("Вы действительно хотите удалить? :\n %s",
+                                            model.getCurrentDataBase().getAnimalFromId(deleteId)),
+                                    confirmRequestYesNo
+                            );
+                        }else {
+                            view.displayResultMessage(String.format("ID: %d не найден в базе", deleteId));
+                            break;
+                        }
+
+                        if(view.getSelectedMenuItem() == 1)
+                        {
+                            if(model.getCurrentDataBase().removeAnimal(deleteId))
+                                view.displayResultMessage("Животное успешно удалено!");
+                            else
+                                view.displayResultMessage("Ошибка удаления");
+                        }else{
+                            view.displayResultMessage("Отмена удаления");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean exit()
+    {
+        view.exit();
+        return model.getCurrentDataBase().close();
+    }
+
+    private ArrayList<String> addCommandMenu()
+    {
+        String command = "";
+        ArrayList<String> commands = new ArrayList<>();
+        while (true)
+        {
+            view.displayMenu("Добавить команду?", confirmRequestYesNo);
+            if(view.getSelectedMenuItem() == 2)
+                break;
+            commands.add(view.getCommand());
+            view.displayResultMessage("Команда добавлена");
+        }
+        return commands;
+    }
+}
+```
+* Взаимодействие с пользоваиелем выполнено в консольном варианте:
+
+```
+=============================================================
+База данных "Друзья человека (dataBase.db)" содержет 4 животных
+-------------------------------------------------------------
+[1] Прочитать базу данных
+[2] Добавить животное
+[3] Удалить животное
+[4] Выход
+=============================================================
+Выберете пункт меню от 1 до 4: 1
+
+----- dataBase.db ------
+Домашние животные (2):
+[ID: 1] Имя: Чика, Дата рождения: 13-02-2020, Команды: Спать, Жрать, Бегать
+[ID: 2] Имя: Вася, Дата рождения: 12-12-2020, Команды: Голос, Прыгнуть, Брысь
+Вьючные животные (2):
+[ID: 3] Имя: Эдик, Дата рождения: 15-06-2018, Команды: Быстрее, Сидеть, Лежать
+[ID: 4] Имя: Боря, Дата рождения: 17-12-2019, Команды: Плюнуть
+
+----- Конец базы данных ------
+
+=============================================================
+База данных "Друзья человека (dataBase.db)" содержет 4 животных
+-------------------------------------------------------------
+[1] Прочитать базу данных
+[2] Добавить животное
+[3] Удалить животное
+[4] Выход
+=============================================================
+Выберете пункт меню от 1 до 4: 4
+-------------------------------------------------------------
+-------------------------------------------------------------
+Выход из приложения.
+-------------------------------------------------------------
+Приложение завершилось без ошибок
+
+Process finished with exit code 0
+```
+
 ### Работа с MySQL в Linux. “Установить MySQL на вашу вычислительную машину ”
 > Примечание: на практике мной использовался уже рабочий VDS сервер (выполняющий мои задачи) работающий на ОС Debian 4.19.304-1:
 ```sh
