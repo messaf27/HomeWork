@@ -86,7 +86,7 @@ SELECT * FROM animals;
 * Создаем таблицу _"pet_animals"_
 ```sql
 CREATE TABLE pet_animals(
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	  id INT AUTO_INCREMENT PRIMARY KEY,
     sub_type VARCHAR (20),
     sub_type_id INT,
     FOREIGN KEY (sub_type_id) REFERENCES animals (id) ON DELETE CASCADE ON UPDATE CASCADE);
@@ -113,7 +113,7 @@ SELECT * FROM pet_animals;
 * Создаем таблицу _"pack_animals"_
 ```sql
 CREATE TABLE pack_animals(
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	  id INT AUTO_INCREMENT PRIMARY KEY,
     sub_type VARCHAR (20),
     sub_type_id INT,
     FOREIGN KEY (sub_type_id) REFERENCES animals (id) ON DELETE CASCADE ON UPDATE CASCADE);
@@ -257,7 +257,7 @@ INSERT INTO hamster (Name, Birthday, Commands, sub_type_id)
 	('Pusik', '2023-01-13', 'Sleep, Jump', 1),
 	('Koshmarik', '2024-01-12', "Run, Fyr-Fyr", 1),  
 	('Lusya', '2019-11-01', "Go", 1);  
-   
+
 SELECT * FROM hamster;
 +----+-----------+------------+--------------+-------------+
 | id | Name      | Birthday   | Commands     | sub_type_id |
@@ -266,5 +266,155 @@ SELECT * FROM hamster;
 |  2 | Koshmarik | 2024-01-12 | Run, Fyr-Fyr |           1 |
 |  3 | Lusya     | 2019-11-01 | Go           |           1 |
 +----+-----------+------------+--------------+-------------+
+```
+>***horse***
+```sql
+INSERT INTO horse (Name, Birthday, Commands, sub_type_id) 
+  VALUES 
+	('Iskra', '2012-02-09', 'Go, Stop, Jump', 2),
+	('Zvezda', '2013-08-22', 'Go, Stop', 2),  
+	('Masha', '2019-11-01', "Jump, Voice", 2);   
+
+SELECT * FROM horse;
++----+--------+------------+----------------+-------------+
+| id | Name   | Birthday   | Commands       | sub_type_id |
++----+--------+------------+----------------+-------------+
+|  1 | Iskra  | 2012-02-09 | Go, Stop, Jump |           2 |
+|  2 | Zvezda | 2013-08-22 | Go, Stop       |           2 |
+|  3 | Masha  | 2019-11-01 | Jump, Voice    |           2 |
++----+--------+------------+----------------+-------------+
+```
+>***donkey***
+```sql
+INSERT INTO donkey (Name, Birthday, Commands, sub_type_id) 
+  VALUES 
+	('Volodya', '2000-04-11', 'Tifoo', 2),
+	('Valera', '2013-08-22', 'Go, Stop', 2),  
+	('Gennadich', '2019-11-01', "Sleep", 2);   
+
+SELECT * FROM donkey;
++----+-----------+------------+----------+-------------+
+| id | Name      | Birthday   | Commands | sub_type_id |
++----+-----------+------------+----------+-------------+
+|  1 | Volodya   | 2000-04-11 | Tifoo    |           2 |
+|  2 | Valera    | 2013-08-22 | Go, Stop |           2 |
+|  3 | Gennadich | 2019-11-01 | Sleep    |           2 |
++----+-----------+------------+----------+-------------+
+
+```
+>***camel***
+```sql
+INSERT INTO camel (Name, Birthday, Commands, sub_type_id) 
+  VALUES 
+	('Gosha', '2010-11-11', 'Tifoo, Jump', 2),
+	('Ivanych', '2013-08-20', 'Dance, Round, Stop', 2),  
+	('Vitek', '2014-09-17', "Seat, Trash", 2);   
+
+SELECT * FROM camel;
++----+---------+------------+--------------------+-------------+
+| id | Name    | Birthday   | Commands           | sub_type_id |
++----+---------+------------+--------------------+-------------+
+|  1 | Gosha   | 2010-11-11 | Tifoo, Jump        |           2 |
+|  2 | Ivanych | 2013-08-20 | Dance, Round, Stop |           2 |
+|  3 | Vitek   | 2014-09-17 | Seat, Trash        |           2 |
++----+---------+------------+--------------------+-------------+
+```
+
+>* Далее в соответствии с заданием нужно _***"удалить записи о верблюдах и объединить таблицы лошадей и ослов"***_.
+* Удаляем данные о верблюдах в соответствующей таблице:
+```sql
+DELETE FROM camel;
+SELECT * FROM camel;
+Empty set (0.00 sec)
+```
+* Объединяем лошадeй, и ослов в одну таблицу:
+```sql
+SELECT * FROM horse
+UNION
+SELECT * FROM donkey;
++----+-----------+------------+----------------+-------------+
+| id | Name      | Birthday   | Commands       | sub_type_id |
++----+-----------+------------+----------------+-------------+
+|  1 | Iskra     | 2012-02-09 | Go, Stop, Jump |           2 |
+|  2 | Zvezda    | 2013-08-22 | Go, Stop       |           2 |
+|  3 | Masha     | 2019-11-01 | Jump, Voice    |           2 |
+|  1 | Volodya   | 2000-04-11 | Tifoo          |           2 |
+|  2 | Valera    | 2013-08-22 | Go, Stop       |           2 |
+|  3 | Gennadich | 2019-11-01 | Sleep          |           2 |
++----+-----------+------------+----------------+-------------+
+```
+* Создаем новую таблицу для животных в возрасте от 1 до 3 лет и вычислить их возраст с точностью до месяца:
+```sql
+CREATE VIEW all_animals AS
+SELECT * FROM horse
+UNION
+SELECT * FROM donkey
+UNION
+SELECT * FROM dog
+UNION
+SELECT * FROM cat
+UNION
+SELECT * FROM hamster;
+
+CREATE TABLE young_age
+SELECT Id, Name, Birthday, Commands, sub_type_id, TIMESTAMPDIFF(MONTH, Birthday, CURDATE()) AS Age_months
+FROM all_animals
+WHERE Birthday BETWEEN ADDDATE(curdate(), INTERVAL -3 YEAR) AND ADDDATE(CURDATE(), INTERVAL -1 YEAR);
+
+SELECT * FROM young_age;
++----+----------+------------+------------------+-------------+------------+
+| Id | Name     | Birthday   | Commands         | sub_type_id | Age_months |
++----+----------+------------+------------------+-------------+------------+
+|  2 | Losharik | 2022-03-11 | Go, Run, Gav-Gav |           1 |         25 |
+|  2 | Shurik   | 2022-02-11 | Go, Run, Mur     |           1 |         26 |
+|  1 | Pusik    | 2023-01-13 | Sleep, Jump      |           1 |         15 |
++----+----------+------------+------------------+-------------+------------+
+
+```
+* Объединяем все созданные таблицы в одну, сохраняя информацию о принадлежности к исходным таблицам:
+```sql
+SELECT hr.Name, hr.Birthday, hr.Commands, pkan.sub_type
+FROM horse hr
+LEFT JOIN young_age yng ON yng.Name = hr.Name
+LEFT JOIN pack_animals pkan ON pkan.Id = hr.sub_type_id
+UNION 
+SELECT dnk.Name, dnk.Birthday, dnk.Commands, pkan.sub_type
+FROM donkey dnk
+LEFT JOIN young_age yng ON yng.Name = dnk.Name
+LEFT JOIN pack_animals pkan ON pkan.Id = dnk.sub_type_id
+UNION
+SELECT ct.Name, ct.Birthday, ct.Commands, ptan.sub_type
+FROM cat ct
+LEFT JOIN young_age yng ON yng.Name = ct.Name
+LEFT JOIN pet_animals ptan ON ptan.Id = ct.sub_type_id
+UNION
+SELECT dg.Name, dg.Birthday, dg.Commands, ptan.sub_type
+FROM dog dg
+LEFT JOIN young_age yng ON yng.Name = dg.Name
+LEFT JOIN pet_animals ptan ON ptan.Id = dg.sub_type_id
+UNION
+SELECT hmr.Name, hmr.Birthday, hmr.Commands, ptan.sub_type
+FROM hamster hmr
+LEFT JOIN young_age yng ON yng.Name = hmr.Name
+LEFT JOIN pet_animals ptan ON ptan.Id = hmr.sub_type_id;
++-----------+------------+------------------+----------+
+| Name      | Birthday   | Commands         | sub_type |
++-----------+------------+------------------+----------+
+| Iskra     | 2012-02-09 | Go, Stop, Jump   | Horse    |
+| Zvezda    | 2013-08-22 | Go, Stop         | Horse    |
+| Masha     | 2019-11-01 | Jump, Voice      | Horse    |
+| Volodya   | 2000-04-11 | Tifoo            | Horse    |
+| Valera    | 2013-08-22 | Go, Stop         | Horse    |
+| Gennadich | 2019-11-01 | Sleep            | Horse    |
+| Barsic    | 2020-05-13 | Voice, Go, Jump  | Cat      |
+| Shurik    | 2022-02-11 | Go, Run, Mur     | Cat      |
+| Vasya     | 2019-11-02 | Jump, Go         | Cat      |
+| Sharik    | 2020-04-13 | Voice, Jump      | Cat      |
+| Losharik  | 2022-03-11 | Go, Run, Gav-Gav | Cat      |
+| Kuzya     | 2019-11-01 | Jump             | Cat      |
+| Pusik     | 2023-01-13 | Sleep, Jump      | Cat      |
+| Koshmarik | 2024-01-12 | Run, Fyr-Fyr     | Cat      |
+| Lusya     | 2019-11-01 | Go               | Cat      |
++-----------+------------+------------------+----------+
 
 ```
