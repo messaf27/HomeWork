@@ -1,15 +1,192 @@
 # Итоговая контрольная работа "Система учета для питомника, в котором живут домашние и вьючные животные"
 
-### Задача 1. Работа с файлами через терминал Linux
-* Используя команду cat в терминале операционной системы Linux, создать два файла **Домашние животные** (заполнив файл собаками, кошками, хомяками) и **Вьючные животными** заполнив файл Лошадьми, верблюдами и ослы), а затем объединить их.*
+### Операционные системы и виртуализация (Linux) ###
+
+### 1. Использование команды cat в Linux
+_Создать два текстовых файла: "Pets"(Домашние животные) и "Pack animals"(вьючные животные), используя команду `cat` в терминале Linux. В первом файле перечислить собак, кошек и хомяков. Во втором — лошадей, верблюдов и ослов._
+
+* Для начало создадим каталог, в котором будем работать:
 
 ```sh
-:~$ mkdir 'Итоговая контрольная работа'
-:~$ cd 'Итоговая контрольная работа'
+root@telebotvpnserver:~# cd /home
+root@telebotvpnserver:/home# mkdir HomeWork
+root@telebotvpnserver:/home# cd HomeWork/
+root@telebotvpnserver:/home/HomeWork#
+```
+* Создадим текстовый файл: "PetAnimals"(Домашние животные):
+```sh
+root@telebotvpnserver:/home/HomeWork# cat > PetAnimals
+Cat
+Dog
+Hamster
 ```
 
+* Создадим текстовый файл: "PackAnimals"(вьючные животные):
+```sh
+root@telebotvpnserver:/home/HomeWork# cat > PackAnimals
+Horse
+Camel
+Donkey
+```
 
-### Задача 2. Работа с MySQL
+_Объединить содержимое этих двух файлов в один и просмотреть его содержимое. Переименовать получившийся файл в "Human Friends"_
+
+* Склеиваем файлы в новый файл командой `cat`:
+```sh
+root@telebotvpnserver:/home/HomeWork# cat PetAnimals PackAnimals > HumanFriends
+```
+* Просмотрим каталог:
+```sh
+root@telebotvpnserver:/home/HomeWork# ls -l
+total 12
+-rw-r--r-- 1 root root 35 May  2 20:38 HumanFriends
+-rw-r--r-- 1 root root 19 May  2 20:35 PackAnimals
+-rw-r--r-- 1 root root 16 May  2 20:34 PetAnimals
+```
+* Как видим - файл создан, теперь просмотрим его содержимое с помощью команды `cat`:
+```sh
+root@telebotvpnserver:/home/HomeWork# cat HumanFriends
+Cat
+Dog
+Hamster
+Horse
+Camel
+Donkey
+```
+
+### 2. Работа с директориями в Linux
+_Создать новую директорию и переместить туда файл "Human Friends"._
+
+* Создаем дирректорию (каталог) с помощью команды `mkdir`:
+```sh
+root@telebotvpnserver:/home/HomeWork# mkdir NewDirectory
+```
+* Проверяем:
+```sh
+root@telebotvpnserver:/home/HomeWork# ls -l
+total 16
+-rw-r--r-- 1 root root   35 May  2 20:38 HumanFriends
+drwxr-xr-x 2 root root 4096 May  2 20:48 NewDirectory
+-rw-r--r-- 1 root root   19 May  2 20:35 PackAnimals
+-rw-r--r-- 1 root root   16 May  2 20:34 PetAnimals
+```
+
+* Переносим каталог "HumanFriends" в новую дирректорию с помощью команды `mv` и проверям результат:
+```sh
+root@telebotvpnserver:/home/HomeWork# mv HumanFriends NewDirectory
+root@telebotvpnserver:/home/HomeWork# ls -l
+total 12
+drwxr-xr-x 2 root root 4096 May  2 20:51 NewDirectory
+-rw-r--r-- 1 root root   19 May  2 20:35 PackAnimals
+-rw-r--r-- 1 root root   16 May  2 20:34 PetAnimals
+
+root@telebotvpnserver:/home/HomeWork# cd NewDirectory/
+root@telebotvpnserver:/home/HomeWork/NewDirectory# ls -l
+total 4
+-rw-r--r-- 1 root root 35 May  2 20:38 HumanFriends
+
+root@telebotvpnserver:/home/HomeWork/NewDirectory# cat HumanFriends
+Cat
+Dog
+Hamster
+Horse
+Camel
+Donkey
+```
+
+### 3. Управление deb-пакетами
+   _Установить и затем удалить deb-пакет, используя команду `dpkg`._
+
+* Скачмваем пакет с помощью команды `wget`:
+```sh
+root@telebotvpnserver:~# wget https://dev.mysql.com/get/mysql-apt-config_0.8.25-1_all.deb
+--2024-05-02 21:22:32--  https://dev.mysql.com/get/mysql-apt-config_0.8.25-1_all.deb
+Resolving dev.mysql.com (dev.mysql.com)... 23.38.27.41, 2a02:26f0:6b:180::2e31, 2a02:26f0:6b:1b3::2e31
+Connecting to dev.mysql.com (dev.mysql.com)|23.38.27.41|:443... connected.
+HTTP request sent, awaiting response... 302 Moved Temporarily
+Location: https://repo.mysql.com//mysql-apt-config_0.8.25-1_all.deb [following]
+--2024-05-02 21:22:32--  https://repo.mysql.com//mysql-apt-config_0.8.25-1_all.deb
+Resolving repo.mysql.com (repo.mysql.com)... 23.201.249.199, 2a02:26f0:6b:183::1d68, 2a02:26f0:6b:18e::1d68
+Connecting to repo.mysql.com (repo.mysql.com)|23.201.249.199|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 18120 (18K) [application/x-debian-package]
+Saving to: ‘mysql-apt-config_0.8.25-1_all.deb.1’
+
+mysql-apt-config_0.8.25-1_a 100%[===========================================>]  17.70K  --.-KB/s    in 0s
+
+2024-05-02 21:22:32 (56.9 MB/s) - ‘mysql-apt-config_0.8.25-1_all.deb.1’ saved [18120/18120]
+```
+* Устанавливаем:
+
+```sh
+root@telebotvpnserver:~# dpkg -i mysql-apt-config_0.8.25-1_all.deb
+
+ ┌──────────────────────────────────────Configuring mysql-apt-config────────────────────────────────────────┐
+ │ MySQL APT Repo features MySQL Server along with a variety of MySQL components. You may select the        │
+ │ appropriate product to choose the version that you wish to receive.                                      │
+ │                                                                                                          │
+ │ Once you are satisfied with the configuration then select last option 'Ok' to save the configuration,    │
+ │ then run 'apt-get update' to load package list. Advanced users can always change the configurations      │
+ │ later, depending on their own needs.                                                                     │
+ │                                                                                                          │
+ │ Which MySQL product do you wish to configure?                                                            │
+ │ ┌──────────────────────────────────────────────────────────────────────────────────────────────────────┐ │
+ │ │                       MySQL Server & Cluster (Currently selected: mysql-5.7)                         │ │
+ │ │                       MySQL Tools & Connectors (Currently selected: Enabled)                         │ │
+ │ │                       MySQL Preview Packages (Currently selected: Disabled)                          │ │
+ │ │                       Ok                                                                             │ │
+ │ └──────────────────────────────────────────────────────────────────────────────────────────────────────┘ │
+ ├──────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ │                                                 <  OK  >                                                 │
+ └──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+* Нажимаем "ОК", далее обновляем репозиторий:
+```sh
+root@telebotvpnserver:~# sudo apt update
+....
+```
+* Устанавливаем MySQL из репозитория:
+```sh
+root@telebotvpnserver:~# apt install mysql-server
+....
+```
+* Далее можно удалить mysql-server - удобнее работать в контейнере
+```sh
+root@telebotvpnserver:~# apt remove mysql-server
+....
+```
+### Объектно-ориентированное программирование  ###
+* Диаграмма классов сделана в IDE IntelliJ IDEA 2024.1
+
+![Diagram](https://github.com/messaf27/HomeWork/blob/main/AnimalsAppJava/Диаграмма%20классов.PNG?raw=true).
+
+* Далее разработка приложения велась по одному из принятому паттерну `MVC (Model-View-Controller)`.
+
+__*Весь проект приложения выложен по ссылке [AnimalsAppJava/AnimalsApp/src](https://github.com/messaf27/HomeWork/tree/main/AnimalsAppJava/AnimalsApp/src), точка входа в файле scr/Main.java*__ 
+
+```java
+import UI.App;
+
+public class Main {
+    public static void main(String[] args) {
+
+        App app = new App();
+        boolean result = app.run();
+
+        System.out.printf(
+                "Приложение завершилось %s\r\n",
+                result ? "без ошибок" : "с ошибкой!");
+    }
+
+}
+```
+
+### Работа с MySQL в Linux. “Установить MySQL на вашу вычислительную машину ”
+> Примечание: на практике мной использовался уже рабочий VDS сервер (выполняющий мои задачи) работающий на ОС Debian 4.19.304-1:
+```sh
+root@telebotvpnserver:~# uname -a
+Linux telebotvpnserver 4.19.0-26-amd64 #1 SMP Debian 4.19.304-1 (2024-01-09) x86_64 GNU/Linux
+```
 * Устанавливаем контейнер MySQL с помощью Docker:
 ```sh
 root@telebotvpnserver:~# sudo docker run -h $HOSTNAME --name mydb-mysql -e MYSQL_ROOT_PASSWORD=123 -d mysql:latest
