@@ -160,7 +160,7 @@ root@telebotvpnserver:~# apt remove mysql-server
 
 ![Diagram](https://github.com/messaf27/HomeWork/blob/main/AnimalsAppJava/Диаграмма%20классов.PNG?raw=true).
 
-* Далее разработка приложения велась по одному из принятому паттерну `MVC (Model-View-Controller)`.
+* Далее разработка приложения велась по одному из принятому паттерну `MVP (Model-View-Presenter)`.
 
 __*Весь проект приложения выложен по ссылке [AnimalsAppJava/AnimalsApp/src](https://github.com/messaf27/HomeWork/tree/main/AnimalsAppJava/AnimalsApp/src), точка входа в файле scr/Main.java*__ 
 
